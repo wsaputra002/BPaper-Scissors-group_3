@@ -2,88 +2,106 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+
 using namespace std;
 
-// Fungsi untuk menghasilkan pilihan acak komputer
-string pilihanKomputer()
-{
-    int pilihan = rand() % 3;
-    if (pilihan == 0)
-    {
-        return "Batu";
-    }
-    else if (pilihan == 1)
-    {
-        return "Gunting";
-    }
-    else
-    {
-        return "Kertas";
+// Fungsi untuk menampilkan pilihan
+void displayChoices() {
+    cout << "Pilihan:\n";
+    cout << "1. Gunting\n";
+    cout << "2. Batu\n";
+    cout << "3. Kertas\n";
+}
+
+// Fungsi untuk mendapatkan pilihan pemain
+int getPlayerChoice() {
+    int choice;
+    cout << "Masukkan pilihan Anda (1-3): ";
+    cin >> choice;
+    return choice;
+}
+
+// Fungsi untuk mendapatkan pilihan komputer
+int getComputerChoice() {
+    return rand() % 3 + 1;  // 1: Gunting, 2: Batu, 3: Kertas
+}
+
+// Fungsi untuk menentukan pemenang
+int determineWinner(int playerChoice, int computerChoice) {
+    if (playerChoice == computerChoice) {
+        return 0; // Seri
+    } else if ((playerChoice == 1 && computerChoice == 2) ||
+               (playerChoice == 2 && computerChoice == 3) ||
+               (playerChoice == 3 && computerChoice == 1)) {
+        return 1; // Pemain menang
+    } else {
+        return -1; // Komputer menang
     }
 }
 
-// Fungsi untuk menentukan hasil pertandingan
-string hasilPertandingan(string pilihanPemain, string pilihanKomputer)
-{
-    if (pilihanPemain == pilihanKomputer)
-    {
-        return "Seri!";
+// Fungsi untuk mencari elemen dalam array
+bool searchArray(int key, int array[], int size) {
+    for (int i = 0; i < size; ++i) {
+        if (array[i] == key) {
+            return true; // Elemen ditemukan
+        }
     }
-    else if ((pilihanPemain == "Batu" && pilihanKomputer == "Gunting") ||
-             (pilihanPemain == "Gunting" && pilihanKomputer == "Kertas") ||
-             (pilihanPemain == "Kertas" && pilihanKomputer == "Batu"))
-    {
-        return "Anda Menang!";
-    }
-    else
-    {
-        return "Anda Kalah.";
-    }
+    return false; // Elemen tidak ditemukan
 }
 
-int main()
-{
-    // Mengatur seed acak berdasarkan waktu
-    srand(static_cast<unsigned int>(time(0)));
+// Fungsi untuk mengurutkan array
+void sortArray(int array[], int size) {
+    sort(array, array + size);
+}
 
-    cout << "=== Game Batu, Gunting, Kertas ===" << endl;
+int main() {
+    srand(time(0));
 
-    // Loop permainan
-    bool mainLagi = true;
-    while (mainLagi)
-    {
-        // Pilihan pemain
-        string pilihanPemain;
-        cout << "Pilih (Batu/Gunting/Kertas): ";
-        cin >> pilihanPemain;
+    const int rounds = 3;
+    int playerScore = 0;
+    int computerScore = 0;
+    int playerChoices[rounds];
 
-        // Validasi input pemain
-        transform(pilihanPemain.begin(), pilihanPemain.end(), pilihanPemain.begin(), ::tolower);
-        if (pilihanPemain != "batu" && pilihanPemain != "gunting" && pilihanPemain != "kertas")
-        {
-            cout << "Input tidak valid. Coba lagi." << endl;
-            continue;
-        }
+    for (int round = 1; round <= rounds; ++round) {
+        cout << "Round " << round << "\n";
+        displayChoices();
 
-        // Pilihan komputer
-        string pilihanComp = pilihanKomputer();
-        cout << "Komputer memilih: " << pilihanComp << endl;
+        int playerChoice = getPlayerChoice();
+        playerChoices[round - 1] = playerChoice;
+        int computerChoice = getComputerChoice();
 
-        // Menentukan hasil pertandingan
-        cout << hasilPertandingan(pilihanPemain, pilihanComp) << endl;
+        cout << "Anda memilih: " << playerChoice << "\n";
+        cout << "Komputer memilih: " << computerChoice << "\n";
 
-        // Meminta pemain apakah ingin bermain lagi
-        cout << "Main lagi? (Ya/Tidak): ";
-        string jawaban;
-        cin >> jawaban;
-        transform(jawaban.begin(), jawaban.end(), jawaban.begin(), ::tolower);
-        if (jawaban != "ya")
-        {
-            mainLagi = false;
+        int result = determineWinner(playerChoice, computerChoice);
+
+        if (result == 0) {
+            cout << "Hasil: Seri!\n";
+        } else if (result == 1) {
+            cout << "Hasil: Anda menang!\n";
+            playerScore++;
+        } else {
+            cout << "Hasil: Komputer menang!\n";
+            computerScore++;
         }
     }
 
-    cout << "Terima kasih telah bermain!" << endl;
+    cout << "\nSkor Akhir:\n";
+    cout << "Anda: " << playerScore << " poin\n";
+    cout << "Komputer: " << computerScore << " poin\n";
 
-    return 0;
+    // Menggunakan searching dan sorting pada array
+    int searchKey;
+    cout << "Masukkan nilai untuk dicari dalam array: ";
+    cin >> searchKey;
+
+    sortArray(playerChoices, rounds);
+
+    if (searchArray(searchKey, playerChoices, rounds)) {
+        cout << "Nilai ditemukan dalam array.\n";
+    } else {
+        cout << "Nilai tidak ditemukan dalam array.\n";
+    }
+
+  return 0;
 }
