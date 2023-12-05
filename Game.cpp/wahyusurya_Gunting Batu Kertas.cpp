@@ -6,7 +6,8 @@
 using namespace std;
 
 // Fungsi untuk menampilkan pilihan
-void displayChoices() {
+void displayChoices()
+{
     cout << "Pilihan:\n";
     cout << "1. Gunting\n";
     cout << "2. Batu\n";
@@ -14,7 +15,8 @@ void displayChoices() {
 }
 
 // Fungsi untuk mendapatkan pilihan pemain
-int getPlayerChoice() {
+int getPlayerChoice()
+{
     int choice;
     cout << "Masukkan pilihan Anda (1-3): ";
     cin >> choice;
@@ -22,27 +24,37 @@ int getPlayerChoice() {
 }
 
 // Fungsi untuk mendapatkan pilihan komputer
-int getComputerChoice() {
-    return rand() % 3 + 1;  // 1: Gunting, 2: Batu, 3: Kertas
+int getComputerChoice()
+{
+    return rand() % 3 + 1; // 1: Gunting, 2: Batu, 3: Kertas
 }
 
 // Fungsi untuk menentukan pemenang
-int determineWinner(int playerChoice, int computerChoice) {
-    if (playerChoice == computerChoice) {
+int determineWinner(int playerChoice, int computerChoice)
+{
+    if (playerChoice == computerChoice)
+    {
         return 0; // Seri
-    } else if ((playerChoice == 1 && computerChoice == 2) ||
-               (playerChoice == 2 && computerChoice == 3) ||
-               (playerChoice == 3 && computerChoice == 1)) {
+    }
+    else if ((playerChoice == 1 && computerChoice == 2) ||
+             (playerChoice == 2 && computerChoice == 3) ||
+             (playerChoice == 3 && computerChoice == 1))
+    {
         return 1; // Pemain menang
-    } else {
+    }
+    else
+    {
         return -1; // Komputer menang
     }
 }
 
 // Fungsi untuk mencari elemen dalam array
-bool searchArray(int key, int array[], int size) {
-    for (int i = 0; i < size; ++i) {
-        if (array[i] == key) {
+bool searchArray(int key, int array[], int size)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        if (array[i] == key)
+        {
             return true; // Elemen ditemukan
         }
     }
@@ -50,11 +62,13 @@ bool searchArray(int key, int array[], int size) {
 }
 
 // Fungsi untuk mengurutkan array
-void sortArray(int array[], int size) {
+void sortArray(int array[], int size)
+{
     sort(array, array + size);
 }
 
-int main() {
+int main()
+{
     srand(time(0));
 
     const int rounds = 3;
@@ -62,7 +76,8 @@ int main() {
     int computerScore = 0;
     int playerChoices[rounds];
 
-    for (int round = 1; round <= rounds; ++round) {
+    for (int round = 1; round <= rounds; ++round)
+    {
         cout << "Round " << round << "\n";
         displayChoices();
 
@@ -75,12 +90,17 @@ int main() {
 
         int result = determineWinner(playerChoice, computerChoice);
 
-        if (result == 0) {
+        if (result == 0)
+        {
             cout << "Hasil: Seri!\n";
-        } else if (result == 1) {
+        }
+        else if (result == 1)
+        {
             cout << "Hasil: Anda menang!\n";
             playerScore++;
-        } else {
+        }
+        else
+        {
             cout << "Hasil: Komputer menang!\n";
             computerScore++;
         }
@@ -97,11 +117,14 @@ int main() {
 
     sortArray(playerChoices, rounds);
 
-    if (searchArray(searchKey, playerChoices, rounds)) {
+    if (searchArray(searchKey, playerChoices, rounds))
+    {
         cout << "Nilai ditemukan dalam array.\n";
-    } else {
+    }
+    else
+    {
         cout << "Nilai tidak ditemukan dalam array.\n";
     }
 
-  return 0;
+    return 0;
 }
